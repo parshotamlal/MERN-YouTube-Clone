@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Custom Scrollbar for Side Navbar */
+.SideNavbar::-webkit-scrollbar {
+  width: 12px;
+}
