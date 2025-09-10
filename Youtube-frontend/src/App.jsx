@@ -2,6 +2,8 @@ import "./App.css";
 import { Home } from "./pages/Home";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
+import { Route,Router, Routes } from "react-router-dom";
+import Video from "./pages/Video";
 
 function App() {
   const [sideNavbar, setSideNavbar] = useState(true);
@@ -12,10 +14,16 @@ function App() {
   };
 
   return (
-    <div>
+    <div className=" ">
       <Navbar setSideNavbarfunc={setSideNavbarfunc} sideNavbar={sideNavbar} />
-      <Home sideNavbar={sideNavbar} />
-    </div>
+
+      <Routes>
+        <Route path='/' element={<Home sideNavbar={sideNavbar} />}/>
+        <Route path="/watch/:id" element={<Video />} /> 
+        <Route path="/watch" element={<Video />} /> 
+      </Routes>
+
+      </div>
   );
 }
 

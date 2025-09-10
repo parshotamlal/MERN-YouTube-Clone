@@ -16,10 +16,10 @@ function SideNavbar({sideNavbar}) {
 
 
   return (
-    <div  className={ sideNavbar? "flex flex-col shrink grow basis-[16%] box-border h-[92vh] overflow-y-auto fixed top-[55px] left-0 w-[275px] p-[14px] bg-black text-white" : " hidden"}>
+    <div  className={ sideNavbar? "flex flex-col shrink grow basis-[16%] box-border h-[92vh] overflow-y-auto fixed top-[55px] left-0 w-[275px] p-[14px] bg-black text-white " : " hidden"}>
 
       
-      <div className=' flex flex-col border-b border-[rgb(86,85,85)] pb-[10px]'> 
+      <div className='  flex flex-col border-b border-[rgb(86,85,85)] pb-[10px] '> 
 
         <div className=' flex items-center gap-[20px] px-[10px] py-[9px] rounded-[15px] cursor-pointer hover:bg-[rgb(35,35,35)]'>
           <IoMdHome />

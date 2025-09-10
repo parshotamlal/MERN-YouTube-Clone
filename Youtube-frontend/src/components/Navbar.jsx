@@ -18,7 +18,7 @@ function Navbar({sideNavbar,setSideNavbarfunc}) {
 
   
   return (
-    <div className="h-14 flex items-center w-full justify-between top-0 fixed bg-black z-40 px-4">  
+    <div className=" h-14 flex items-center w-full justify-between top-0 fixed bg-black z-40 px-4">  
       
       {/* Left Section (Menu + Logo) */}
       <div className="flex items-center gap-4">                                     
