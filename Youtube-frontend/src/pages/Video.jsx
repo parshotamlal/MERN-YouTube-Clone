@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 
 function Video() {
@@ -26,10 +27,13 @@ function Video() {
 
         <div className=" justify-between flex mr-[10px]">
           <div className=" flex gap-[15px]">
-            <div className=" w-[35px] h-[35px] cursor-pointer">
+
+            {/* user profile */}
+            
+            <Link to={'/user/323'} className=" w-[35px] h-[35px] cursor-pointer">
 
               <img className=" w-full h-full rounded-[50%]" src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="" />
-            </div>
+            </Link>
 
             <div className=" flex flex-col">
               <div className=" font-bold text-[16px]"> {"user1"}</div>
