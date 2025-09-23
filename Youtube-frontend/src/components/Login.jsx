@@ -2,7 +2,6 @@ import React from "react";
 import { FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-
 function Login({setLoginModal}) {
   return (
     <div className=" w-full h-[400px] bg-black/70 fixed mt-30 top-0 text-white flex justify-center font-oswald font-normal">
@@ -30,20 +29,29 @@ function Login({setLoginModal}) {
           />
 
           {/* Buttons */}
-          <div className="flex gap-3">
-            <button className="flex-1 h-11 bg-red-600 rounded-lg hover:bg-red-700 transition font-medium">
-              Login
-            </button>
+     <div className="flex gap-3">
+  {/* Login button */}
+  <button className="flex-1 h-11 bg-red-600 rounded-lg hover:bg-red-700 transition font-medium text-white">
+    Login
+  </button>
 
+  {/* Signup link styled as a button */}
+  <Link
+    to="/signup"
+      onClick={() => setLoginModal(false)} className="flex-1 h-11 flex items-center justify-center bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium text-white"
+  >
+    Signup
+  </Link>
 
-            <button className="flex-1 h-11 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium">
-              Signup
-            </button>
-         
-            <button onClick={setLoginModal} className="flex-1 h-11 bg-gray-600 rounded-lg hover:bg-gray-700 transition font-medium">
-              Cancel
-            </button>
-          </div>
+  {/* Cancel button with modal close */}
+  <button
+    onClick={() => setLoginModal(false)}
+    className="flex-1 h-11 bg-gray-600 rounded-lg hover:bg-gray-700 transition font-medium text-white"
+  >
+    Cancel
+  </button>
+</div>
+
         </div>
       </div>
     </div>

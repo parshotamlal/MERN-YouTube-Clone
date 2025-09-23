@@ -7,6 +7,7 @@ import Video from "./pages/Video";
 import Profile from "./pages/Profile";
 import VideoUpload from "./pages/VideoUpload";
 import { SignUp } from "./components/SignUp";
+import { Login } from "./components/Login";
 
 function App() {
   const [sideNavbar, setSideNavbar] = useState(true);
@@ -28,7 +29,7 @@ function App() {
         <Route path="/:id/upload" element={<VideoUpload />} />
         <Route path="/signup" element={<SignUp />} />
     
-      </Routes>
+      </Routes> 
 
       </div>
   );
