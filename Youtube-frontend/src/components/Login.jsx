@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function Login({setLoginModal}) {
+
+const [loginfield, setLoginfield] = useState({
+  userName: "",
+  password: ""
+});
+console.log(loginfield);
+
+const handleOnChangeInput =(event,name) => {
+  setLoginfield({
+    ...loginfield,[name] :event.target.value
+  })
+}
+
   return (
     <div className=" w-full h-[400px] bg-black/70 fixed mt-30 top-0 text-white flex justify-center font-oswald font-normal">
       <div className="w-[400px] bg-[#1c1c1c] p-8 rounded-xl shadow-lg text-white">
@@ -14,18 +27,19 @@ function Login({setLoginModal}) {
 
         {/* Form */}
         <div className="flex flex-col gap-4">
-          {/* Email Input */}
+          {/* UserName Input */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition"
-            type="email"
-            placeholder="Email"
+            value={loginfield.userName} type="text" onChange={(e)=>handleOnChangeInput(e,"userName")}
+            placeholder="username"
           />
 
           {/* Password Input */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition"
-            type="password"
-            placeholder="Password"
+             value={loginfield.password} onChange={(e)=>handleOnChangeInput(e,"password")}
+           type="password"
+            placeholder="Password" 
           />
 
           {/* Buttons */}

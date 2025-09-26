@@ -9,6 +9,7 @@ function Video() {
 
 
   const [comment, setComment] = useState('');
+  console.log(comment);
   return (
     <div className=" bg-black flex justify-center mt-[56px] p-[30px 0] text-white">
      <div className=" w-full max-w-[875px] flex flex-col">
