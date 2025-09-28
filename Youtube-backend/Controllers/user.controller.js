@@ -1,5 +1,12 @@
 import User from "../Modals/user.modals.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const cookieOptions ={
+httpOnly :true,
+secure:false,
+sameSite:'Lax'
+}
 
 // Create User (Signup)
 export const createUser = async (req, res) => {
@@ -48,7 +55,9 @@ export const CheckUser = async (req, res) => {
     const user = await User.findOne({userName});
 
     if(user && await bcrypt.compare(password,user.password)) {
-        res.status(200).json({massage:'Logged in successfully',success:true});
+      const token =jwt.sign({userId:user._id},'Its_My_Secret_Key');
+      res.cookie('token',token,cookieOptions);
+        res.status(200).json({massage:'Logged in successfully',success:true,token});
 
     }
     else {
@@ -62,5 +71,18 @@ export const CheckUser = async (req, res) => {
   } catch (error) {
 
     res.status(500).json({ message: "server error!" });
+  }
+};
+
+
+
+export const logOut = async (req, res) => {
+  try {
+    res
+      .clearCookie("token", cookieOptions)
+      .status(200)
+      .json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed", error: error.message });
   }
 };
