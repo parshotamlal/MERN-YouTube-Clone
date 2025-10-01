@@ -1,7 +1,7 @@
 import "./App.css";
 import { Home } from "./pages/Home";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route,Router, Routes } from "react-router-dom";
 import Video from "./pages/Video";
 import Profile from "./pages/Profile";
@@ -9,7 +9,10 @@ import VideoUpload from "./pages/VideoUpload";
 import { SignUp } from "./components/SignUp";
 import { Login } from "./components/Login";
 
+
 function App() {
+
+
   const [sideNavbar, setSideNavbar] = useState(true);
 
   // function to toggle sidebar

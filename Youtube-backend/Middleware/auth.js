@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import user from "../Modals/user.modals.js";
 
 
-const auth =async(req,res,next)=> {
+export const auth =async(req,res,next)=> {
     const token =req.cookies.token;
     if(!token) {
         return res.status(401).json({error:'No token,authentication denied'});

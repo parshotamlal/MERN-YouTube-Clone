@@ -1,8 +1,10 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 function Video() {
@@ -10,35 +12,109 @@ function Video() {
 
   const [comment, setComment] = useState('');
   console.log(comment);
+
+  const [comments,setComments] = useState([]);
+
+  const [videoUrl,setVideoUrl]= useState("");
+  const [data,setData] =useState(null);
+
+  const {id} =useParams();
+  
+ 
+
+
+
+  const fetchvideoByID = async() => {
+    await axios.get(`http://localhost:5000/api/getVideoBy/${id}`).then((response) => {
+      console.log(response.data.video);
+      setData(response.data.video);
+      setVideoUrl(response?.data?.video?.videoLink);
+
+    }).catch((err) => {
+      console.log(err);
+      
+    })
+  }
+
+
+  const fetchgetCommentByVideoId = async() => {
+    await axios.get(`http://localhost:5000/commentapi/comment/${id}`).then((response) => {
+      console.log(response.data);
+      setComments(response.data);
+       }).catch((err) => {
+      console.log(err);
+      
+    }) 
+  }
+
+//getCommentByVideoId
+
+///comment/:videoId
+
+// http://localhost:5000/commentapi/comment/68da50aa9cd86f587774c6a6
+
+
+// useEffect(() => {
+//     if (id) {   // fetch only when id is available
+//       fetchvideoByID();
+
+//     }
+//   }, []); // ✅ dependency array
+
+
+//   // For comments fetch
+// useEffect(() => {
+//   if (videoId) {
+//     fetchgetCommentByVideoId();
+//   }
+// }, []);
+
+
+useEffect(() => {
+    // fetch only when id is available
+      fetchvideoByID(); 
+       fetchgetCommentByVideoId();
+  }, []); // ✅ dependency array
+
+
   return (
     <div className=" bg-black flex justify-center mt-[56px] p-[30px 0] text-white">
      <div className=" w-full max-w-[875px] flex flex-col">
       <div className=" w-full">
-        <video width="400px" height="200px" autoPlay className="  w-full rounded-[10px] ">
-          
-          <source src="https://www.pexels.com/download/video/1841356/" />
 
-        </video>
 
+       {data  && (
+  <video
+    width="400"
+    height="200"
+    autoPlay  
+    controls
+    className="w-full rounded-[10px]"
+  >
+    <source src={videoUrl} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+)}
+       
       </div>
 
 
       <div className=" flex flex-col">
-        <div className=" text-[20px] font-bold"> {"javascript for begginar"}</div>
+        <div className=" text-[20px] font-bold"> {data?.title}</div>
 
         <div className=" justify-between flex mr-[10px]">
           <div className=" flex gap-[15px]">
 
             {/* user profile */}
             
-            <Link to={'/user/323'} className=" w-[35px] h-[35px] cursor-pointer">
+            <Link to={`/user/${data?.user?._id}`} className=" w-[35px] h-[35px] cursor-pointer">
 
-              <img className=" w-full h-full rounded-[50%]" src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="" />
+              <img className=" w-full h-full rounded-[50%]" src={data?.user?.profilePic} alt="profile" />
             </Link>
 
             <div className=" flex flex-col">
-              <div className=" font-bold text-[16px]"> {"user1"}</div>
-              <div className=" text-[14px] text-gray-400"> 10-09-2025</div>
+              <div className=" font-bold text-[16px]"> {data?.user?.channelName}</div>
+              <div className=" text-[14px] text-gray-400">{data?.user?.createdAt.slice(0,10)}</div>
             </div>
 
             <div className=" font-bold bg-white text-black px-4 rounded-[18px] flex justify-center items-center h-[36px] cursor-pointer text-[14px]">Subscribe</div>
@@ -50,7 +126,7 @@ function Video() {
   {/* Like Section */}
   <div className="flex items-center gap-[10px]">
     <BiLike className="text-gray-400 hover:text-white transition-colors duration-200 text-xl" />
-    <div className="font-bold text-gray-200">{36}</div>
+    <div className="font-bold text-gray-200">{data?.like}</div>
   </div>
 
   {/* Divider */}
@@ -59,7 +135,7 @@ function Video() {
   {/* Dislike Section */}
   <div className="flex items-center gap-[8px]">
     <BiDislike className="text-gray-400 hover:text-white transition-colors duration-200 text-xl" />
-    <div className="font-bold text-gray-200">{36}</div>
+    <div className="font-bold text-gray-200">{data?.dislike}</div>
   </div>
 
 </div>
@@ -69,13 +145,13 @@ function Video() {
 
 {/* description section */}
        <div className=" flex flex-col p-[10px] w-full rounded-[10px] font-bold text-[14px] gap-[10px] mt-[10px] box-border bg-[#a5a5a538]">
-          <div>10-09-2025</div>
-          <div>this is my video</div>
+          <div>{data?.createdAt.slice(0,10)}</div>
+          <div>{data?.description}</div>
         </div>
 
 {/* comment section */}
  <div className=" flex flex-col mt-[20px]">
-  <div className=" font-bold text-[20px]">2 Comments</div>
+  <div className=" font-bold text-[20px]">{comments.length}  Comments</div>
 
 <div className="flex items-center gap-[10px] w-full bg-black p-2 rounded-lg">
 
@@ -122,85 +198,42 @@ function Video() {
     </div>
 
 </div>
-<div className="flex items-center gap-[10px]">
-  
-  {/* Profile Image */}
-  <div className="w-[35px] h-[35px] cursor-pointer">
-    <img
-      className="w-full h-full rounded-full object-cover"
-      src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-      alt="Profile"
-    />
+
+
+
+
+{comments?.map((item, ind) => (
+  <div key={ind} className="flex items-center gap-[15px]">
+    
+    {/* Profile Image */}
+    <div className="w-[35px] h-[35px] cursor-pointer">
+      <img
+        className="w-full h-full rounded-full object-cover"
+        src={item?.user?.profilePic}
+        alt="Profile"
+      />
+    </div>
+
+    {/* User Details */}
+    <div className="flex flex-col text-white">  
+      <div className="font-medium">{item?.user?.channelNameS}</div>
+      <div className="text-xs text-gray-400">{item?.createdAt.slice(0,10)}</div>
+      <div className=" text-white">{item?.message}</div>
+    </div>
   </div>
-
-  {/* User Details */}
-  <div className="flex flex-col text-white">
-  <div className="flex flex-col text-white">
-    <div className="font-medium">User02</div>
-    <div className="text-xs text-gray-400">10-09-2025</div>
-  </div>
-
-  <div> This is a cool project</div>
-  </div>
+))}
 
 
-</div>
-
-<div className="flex items-center gap-[10px]">
-  
-  {/* Profile Image */}
-  <div className="w-[35px] h-[35px] cursor-pointer">
-    <img
-      className="w-full h-full rounded-full object-cover"
-      src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-      alt="Profile"
-    />
-  </div>
-
-  {/* User Details */}
-  <div className="flex flex-col text-white">
-  <div className="flex flex-col text-white">
-    <div className="font-medium">User02</div>
-    <div className="text-xs text-gray-400">10-09-2025</div>
-  </div>
-
-  <div> This is a cool project</div>
-  </div>
 
 
-</div>
-
-<div className="flex items-center gap-[10px]">
-  
-  {/* Profile Image */}
-  <div className="w-[35px] h-[35px] cursor-pointer">
-    <img
-      className="w-full h-full rounded-full object-cover"
-      src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-      alt="Profile"
-    />
-  </div>
-
-  {/* User Details */}
-  <div className="flex flex-col text-white">
-  <div className="flex flex-col text-white">
-    <div className="font-medium">User02</div>
-    <div className="text-xs text-gray-400">10-09-2025</div>
-  </div>
-
-  <div className=" mt-3"> This is a cool project</div>
-  </div>
-
-
-</div>
 
 
  </div>
-
-
-
       </div>
      </div>
+
+
+
 
 <div className="w-full max-w-[406px] text-white rounded-lg overflow-hidden">
   <div className="flex gap-3 p-3 items-start">

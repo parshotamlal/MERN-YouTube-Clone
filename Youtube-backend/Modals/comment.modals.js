@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const videoSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user", // ref name should match the user model
+      ref: "User", // ref name should match the user model
       required: true,
     },
     video: {
@@ -12,7 +12,7 @@ const videoSchema = new mongoose.Schema(
       ref: "video", // ref name should match the video model
       required: true,
     },
-     massage: {
+     message: {
       type: String,
       required:true,
     },
@@ -21,4 +21,4 @@ const videoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("comment", videoSchema);
+export default mongoose.model("comment", commentSchema);
