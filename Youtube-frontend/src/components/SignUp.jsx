@@ -1,50 +1,83 @@
-import React from 'react'
+import React from "react";
 import { FaYoutube } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+
+
 function SignUp() {
-  const [uploadedImageUrl,setUploadedImageUrl] =useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+  );
   const [signupField, setSignupField] = useState({
     channelName: "",
     userName: "",
     password: "",
     about: "",
-    profilePic:uploadedImageUrl
+    profilePic: uploadedImageUrl,
   });
   console.log(signupField);
 
-  
-  const handleInputField =(event,name) => {
-   setSignupField({
-    ...signupField,[name] :event.target.value
-   })
-  }
+  const handleInputField = (event, name) => {
+    setSignupField({
+      ...signupField,
+      [name]: event.target.value,
+    });
+  };
 
-const uploadImage = async (e) => {
-  const files = e.target.files;
-  const data = new FormData();
-  data.append("file", files[0]);
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
 
-  // Correct field name
-  data.append("upload_preset", "youtube-clone");
+    // Correct field name
+    data.append("upload_preset", "youtube-clone");
 
-  try {
-    const response = await axios.post(
-      "https://api.cloudinary.com/v1_1/dqqchw5ak/image/upload",data );
-      const imageUrl =response.data.url;
+    try {
+      setLoader(true);
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dqqchw5ak/image/upload",
+        data
+      );
+      setLoader(false);
+
+      const imageUrl = response.data.url;
       setUploadedImageUrl(imageUrl);
-       setSignupField({
+      setSignupField({
         ...signupField,
         profilePic: imageUrl,
       });
-  } catch (err) {
-    console.error("Upload failed:", err);
-  }
-};
+    } catch (err) {
+      console.error("Upload failed:", err);
+    }
+  };
+
+  const handleSignup = async () => {
+    setLoader(true);
+    axios.post(`http://localhost:5000/auth/signup`, signupField)
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data);
+        navigate('/')
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoader(false);
+      }); 
+  };
+
+   const [loader,setLoader] =useState(false);
+
+   const navigate =useNavigate();
+
+
 
   return (
-     <div className="w-full h-[550px] bg-black fixed mt-30 top-0 text-white flex justify-center font-oswald font-normal">
+    <div className="w-full h-[600px] bg-black fixed mt-20 top-0 text-white flex justify-center font-oswald font-normal">
       <div className="w-[400px] bg-[#1c1c1c] p-8 rounded-xl shadow-lg text-white">
         {/* Header */}
         <div className="flex items-center justify-center gap-2 text-2xl font-semibold mb-6">
@@ -57,34 +90,43 @@ const uploadImage = async (e) => {
           {/* Name Input */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
-             type="text"
-            placeholder="channel Name"   value={signupField.channelName} onChange={(e)=>handleInputField(e,"channelName")}
+            type="text"
+            placeholder="channel Name"
+            value={signupField.channelName}
+            onChange={(e) => handleInputField(e, "channelName")}
           />
-
           {/* userNmae Input */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
             type="text"
-            placeholder="User Name" value={signupField.userName} onChange={(e)=>handleInputField(e,"userName")}
-          />rm Password 
-
+            placeholder="User Name"
+            value={signupField.userName}
+            onChange={(e) => handleInputField(e, "userName")}
+          />
+            Password
           {/* Password Input */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
             type="password"
-            placeholder="Password"  value={signupField.password} onChange={(e)=>handleInputField(e,"password")}
+            placeholder="Password"
+            value={signupField.password}
+            onChange={(e) => handleInputField(e, "password")}
           />
-
           {/* About Channel / */}
           <input
             className="w-full h-11 px-4 text-base bg-[#2a2a2a] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
             type="text"
-            placeholder="About Your Channel"  value={signupField.about} onChange={(e)=>handleInputField(e,"about")}
+            placeholder="About Your Channel"
+            value={signupField.about}
+            onChange={(e) => handleInputField(e, "about")}
           />
-
           {/* Profile Upload */}
           <div className="flex flex-col gap-3">
-            <input type="file" onChange={uploadImage} className="text-sm text-gray-300" />
+            <input
+              type="file"
+              onChange={uploadImage}
+              className="text-sm text-gray-300"
+            />
 
             <div className="flex justify-center">
               <img
@@ -94,15 +136,17 @@ const uploadImage = async (e) => {
               />
             </div>
           </div>
-
           {/* Buttons */}
           <div className="flex gap-3">
             {/* Signup button */}
-            <button className="flex-1 h-11 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium text-white">
+            <button
+              className="flex-1 h-11 bg-blue-600 rounded-lg hover:bg-blue-700 transition font-medium text-white"
+              onClick={handleSignup}
+            >
               Signup
             </button>
 
-            
+           
 
             {/* Cancel -> back to homepage */}
             <Link
@@ -112,10 +156,19 @@ const uploadImage = async (e) => {
               HomePage
             </Link>
           </div>
+
+
+          { loader &&
+
+           <Box sx={{ width: "100%" }}>
+              <LinearProgress />
+            </Box>
+            }
         </div>
       </div>
+      <ToastContainer />
     </div>
-  )
+  );
 }
 
-export {SignUp}
+export { SignUp };

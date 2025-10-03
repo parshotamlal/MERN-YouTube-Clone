@@ -57,7 +57,7 @@ export const CheckUser = async (req, res) => {
     if(user && await bcrypt.compare(password,user.password)) {
       const token =jwt.sign({userId:user._id},'Its_My_Secret_Key');
       res.cookie('token',token,cookieOptions);
-        res.status(200).json({massage:'Logged in successfully',success:true,token});
+        res.status(200).json({massage:'Logged in successfully',success:true,token,user});
 
     }
     else {

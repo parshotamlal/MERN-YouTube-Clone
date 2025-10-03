@@ -5,6 +5,8 @@ import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function Video() {
@@ -21,9 +23,6 @@ function Video() {
   const {id} =useParams();
   
  
-
-
-
   const fetchvideoByID = async() => {
     await axios.get(`http://localhost:5000/api/getVideoBy/${id}`).then((response) => {
       console.log(response.data.video);
@@ -47,27 +46,6 @@ function Video() {
     }) 
   }
 
-//getCommentByVideoId
-
-///comment/:videoId
-
-// http://localhost:5000/commentapi/comment/68da50aa9cd86f587774c6a6
-
-
-// useEffect(() => {
-//     if (id) {   // fetch only when id is available
-//       fetchvideoByID();
-
-//     }
-//   }, []); // ✅ dependency array
-
-
-//   // For comments fetch
-// useEffect(() => {
-//   if (videoId) {
-//     fetchgetCommentByVideoId();
-//   }
-// }, []);
 
 
 useEffect(() => {
@@ -76,6 +54,25 @@ useEffect(() => {
        fetchgetCommentByVideoId();
   }, []); // ✅ dependency array
 
+
+const handleComment = async () => {
+  const body = {
+    "message": comment,
+    "video": id
+  };
+
+  await axios
+    .post(`http://localhost:5000/commentapi/comment`, body, { withCredentials: true })
+    .then((res) => {
+      console.log(res);
+      const newComment =res.data.comment;
+      setComments([newComment,...comments]);
+      setComment("");
+    })
+    .catch((err) => {
+      toast.error("Please Login First! to comment");
+    });
+};
 
   return (
     <div className=" bg-black flex justify-center mt-[56px] p-[30px 0] text-white">
@@ -190,7 +187,7 @@ useEffect(() => {
               : 'bg-gray-500 cursor-not-allowed'
           }`}
           disabled={!comment.trim()}
-        >
+         onClick={handleComment}>
           Comment
         </button>
         
@@ -527,15 +524,7 @@ useEffect(() => {
 </div>
 
 
-
-
-
-
-
-
-
-
-
+<ToastContainer  />
     </div>
   );
 }

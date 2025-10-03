@@ -55,7 +55,7 @@ export const videoById = async (req, res) => {
 
     console.log(id);
 
-    const video = await Video.findById(id).populate('user','channelName profilePic userName createdAt');
+    const video = await Video.findById(id).populate('user','channelName profilePic userName createdAt about');
 
     if (!video) {
       return res.status(404).json({ success: false, message: "Video not found" });
@@ -72,7 +72,7 @@ export const videoById = async (req, res) => {
 export const getAllVideoByUserId =async(req,res) => {
     try{
         let {userId} =req.params;
-        const video =await Video.find({user:userId}).populate('user','channelName profilePic userName createdAt');
+        const video =await Video.find({user:userId}).populate('user','channelName profilePic userName createdAt about');
         res.status(201).json({success:true,"video":video});
 
     }catch(error){

@@ -1,10 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNavbar from '../components/SideNavbar'
 import { IoMdArrowDroprightCircle } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+
+
 
 
 function Profile({sideNavbar}) {
+    const {id} = useParams();
+  const [data,setData] =useState([]);
+  const[user,setUser] = useState([]);
+
+
+const fetchProfileData =async() => {
+  axios.get(`http://localhost:5000/api/${id}/channel`).then((response)=>{
+    console.log(response.data.video);
+    setData(response.data.video);
+    setUser(response.data.video[0]?.user);
+
+  }).catch((error)=> {
+    console.log(error);
+
+  })
+ 
+}
+
+  useEffect(()=> {
+    fetchProfileData();
+
+  },[])
+
+
   return (
     <div className=' flex w-full px-[13px] pt-[10px] pb-0 box-border bg-black text-white'>
       <SideNavbar  sideNavbar={sideNavbar}/>
@@ -15,17 +42,17 @@ function Profile({sideNavbar}) {
      <div className="w-20 md:w-24 lg:w-28 aspect-square overflow-hidden rounded-full flex-shrink-0">
     <img 
       className="object-cover w-full h-full" 
-      src="https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/videoseries/ultimate-js-tutorial-hindi-1/JS-Thumb.jpg" 
+      src={user?.profilePic} 
       alt="JS Tutorial Thumbnail" 
     />
   </div>
 
   {/* Channel Info */}
   <div className="flex flex-col gap-[7px] pl-[10px]">
-    <div className="text-lg font-semibold">Coding Channel</div>
-    <div className="text-gray-500 text-sm">user1 - 4 Videos</div>
+    <div className="text-lg font-semibold">{user?.channelName}</div>
+    <div className="text-gray-500 text-sm">{user?.userName} - {data.length} Videos</div>
     <div className="text-gray-700 text-sm">
-      About Section of videos: This channel covers JavaScript tutorials, React tips, and full-stack projects.
+     {user?.about}
     </div>
   </div>
 
@@ -42,49 +69,26 @@ function Profile({sideNavbar}) {
 
 <div className=' flex gap-[10px] h-screen flex-wrap mt-[20px]'>
 
-  {/* block 1 */}
-  <Link to={'/watch/222'} className=' w-[210px] cursor-pointer'>
+
+
+{data?.map((item) => (
+  <Link to={`/watch/${item._id}`} className=' w-[210px] cursor-pointer'>
     <div className=' w-full'>
-      <img className=' w-full' src="https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/videoseries/ultimate-js-tutorial-hindi-1/JS-Thumb.jpg" alt="" />
+      <img className=' w-full' src={item?.thumbnail} alt="thumbnail" />
     </div>
 
  <div className="flex flex-col gap-1">
-  <div className="text-md font-semibold text-white">Video Title</div>
-  <div className="text-sm text-gray-400">This is a short description of the video. It gives an overview of the content.</div>
+  <div className="text-md font-semibold text-white">{item.title}</div>
+  <div className="text-sm text-gray-400">{item.description}</div>
+  <div className="text-sm text-gray-400">{item?.createdAt.slice(0,10)}</div>
 </div>
 
 
   </Link>
-
-  {/* block 2 */}
-  <Link to={'/watch/222'} className=' w-[210px] cursor-pointer'>
-    <div className=' w-full'>
-      <img className=' w-full' src="https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/videoseries/ultimate-js-tutorial-hindi-1/JS-Thumb.jpg" alt="" />
-    </div>
-
- <div className="flex flex-col gap-1">
-  <div className="text-md font-semibold text-white">Video Title</div>
-  <div className="text-sm text-gray-400">This is a short description of the video. It gives an overview of the content.</div>
-</div>
+  
+))}
 
 
-  </Link>
-
-
-   {/* block 3 */}
-
-  <Link to={'/watch/222'} className=' w-[210px] cursor-pointer'>
-    <div className=' w-full'>
-      <img className=' w-full' src="https://cwh-full-next-space.fra1.cdn.digitaloceanspaces.com/videoseries/ultimate-js-tutorial-hindi-1/JS-Thumb.jpg" alt="" />
-    </div>
-
- <div className="flex flex-col gap-1">
-  <div className="text-md font-semibold text-white">Video Title</div>
-  <div className="text-sm text-gray-400">This is a short description of the video. It gives an overview of the content.</div>
-</div>
-
-
-  </Link>
 
 </div>
 </div>

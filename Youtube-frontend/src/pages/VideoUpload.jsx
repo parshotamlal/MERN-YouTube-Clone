@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaYoutube } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FcApproval  } from "react-icons/fc";
 
@@ -21,6 +21,7 @@ function VideoUpload() {
       [name]: event.target.value
     });
   };
+
 
   const upload = async (e, type) => {
     setLoader(true);
@@ -59,6 +60,24 @@ function VideoUpload() {
   const [videoLoader,setVideoLoader] =useState(false);
 
 
+  let navigate = useNavigate();
+  useEffect(() => {
+    let isLogin = localStorage.getItem("user");
+    if (isLogin === null) {
+      // Redirect if not logged in
+      navigate("/");
+    }
+  }, [])
+
+  const handleSubmitFunc = async () => {
+    await axios.post(`http://localhost:5000/api/video`,inputField,{withCredentials:true}).then((res)=>{
+      console.log(res);
+      navigate("/");
+
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
   return (
     <div className='min-h-screen bg-black flex items-center justify-center px-4 font-oswald text-white'>
       <div className='w-full max-w-lg bg-[#1c1c1c] p-8 rounded-xl shadow-xl'>
@@ -132,7 +151,7 @@ function VideoUpload() {
 
           {/* Footer Buttons */}
           <div className="flex gap-[20px] mt-[10px] justify-end">
-            <button className="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition shadow">
+            <button onClick={handleSubmitFunc} className="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition shadow">
               Upload
             </button>
             <Link to="/">

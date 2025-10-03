@@ -18,7 +18,7 @@ const [data,setData] = useState([]);
 
 
     })
-  })
+  },[]);
 
   const options = [
     "All",
