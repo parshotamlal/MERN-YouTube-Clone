@@ -13,7 +13,6 @@ function Video() {
 
 
   const [comment, setComment] = useState('');
-  console.log(comment);
 
   const [comments,setComments] = useState([]);
 
@@ -25,7 +24,6 @@ function Video() {
  
   const fetchvideoByID = async() => {
     await axios.get(`http://localhost:5000/api/getVideoBy/${id}`).then((response) => {
-      console.log(response.data.video);
       setData(response.data.video);
       setVideoUrl(response?.data?.video?.videoLink);
 
@@ -38,7 +36,6 @@ function Video() {
 
   const fetchgetCommentByVideoId = async() => {
     await axios.get(`http://localhost:5000/commentapi/comment/${id}`).then((response) => {
-      console.log(response.data);
       setComments(response.data);
        }).catch((err) => {
       console.log(err);

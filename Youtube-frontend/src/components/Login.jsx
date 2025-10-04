@@ -24,9 +24,7 @@ function Login({ setLoginModal }) {
 
   const handleLoginFun = async () => {
     setLoader(true);
-    axios
-      .post(`http://localhost:5000/auth/signin`, loginfield,{withCredentials:true
-      })
+    axios.post(`http://localhost:5000/auth/signin`, loginfield,{withCredentials:true})
       .then((res) => {
         setLoader(false);
         localStorage.setItem("token", res.data.token);
