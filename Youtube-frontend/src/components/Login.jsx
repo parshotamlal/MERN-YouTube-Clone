@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
+import { serverUrl } from "../Server";
 
 
 function Login({ setLoginModal }) {
@@ -13,8 +14,6 @@ function Login({ setLoginModal }) {
     userName: "",
     password: "",
   });
-  console.log(loginfield);
-
   const handleOnChangeInput = (event, name) => {
     setLoginfield({
       ...loginfield,
@@ -24,7 +23,7 @@ function Login({ setLoginModal }) {
 
   const handleLoginFun = async () => {
     setLoader(true);
-    axios.post(`http://localhost:5000/auth/signin`, loginfield,{withCredentials:true})
+    axios.post(`${serverUrl}/auth/signin`, loginfield,{withCredentials:true})
       .then((res) => {
         setLoader(false);
         localStorage.setItem("token", res.data.token);

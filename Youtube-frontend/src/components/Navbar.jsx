@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "./Login";
 import axios from "axios";
+import { serverUrl } from "../Server";
 
 function Navbar({ sideNavbar, setSideNavbarfunc }) {
   const [userPic, setUserPic] = useState(
@@ -46,14 +47,15 @@ function Navbar({ sideNavbar, setSideNavbarfunc }) {
       }, 2000);
     }
   };
-
-  const getLogOutFun=()=> {
-    axios.post(`http://localhost:5000/auth/logout`,{},{withCredentials:true}).then((res)=>{
-      console.log("logOUt");
-    }).catch((err) => {
-      console.log(err);
+const getLogOutFun = () => {
+  axios.post(`${serverUrl}/auth/logout`, {}, { withCredentials: true })
+    .then(() => {
+      console.log("Logged out");
     })
-  }
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
   const setLoginModal = () => {
     setlogin(false);

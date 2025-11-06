@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { serverUrl } from "../Server";
 
 
 function Video() {
@@ -49,7 +50,7 @@ useEffect(() => {
     // fetch only when id is available
       fetchvideoByID(); 
        fetchgetCommentByVideoId();
-  }, []); // ✅ dependency array
+  },[]); // ✅ dependency array
 
 
 const handleComment = async () => {
@@ -59,14 +60,14 @@ const handleComment = async () => {
   };
 
   await axios
-    .post(`http://localhost:5000/commentapi/comment`, body, { withCredentials: true })
+    .post(`${serverUrl}/commentapi/comment`, body, { withCredentials: true })
     .then((res) => {
       console.log(res);
       const newComment =res.data.comment;
       setComments([newComment,...comments]);
       setComment("");
     })
-    .catch((err) => {
+    .catch((error) => {
       toast.error("Please Login First! to comment");
     });
 };

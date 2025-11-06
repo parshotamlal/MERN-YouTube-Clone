@@ -3,6 +3,7 @@ import SideNavbar from '../components/SideNavbar'
 import { IoMdArrowDroprightCircle } from "react-icons/io";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { serverUrl } from '../Server';
 
 
 
@@ -14,7 +15,7 @@ function Profile({sideNavbar}) {
 
 
 const fetchProfileData =async() => {
-  axios.get(`http://localhost:5000/api/${id}/channel`).then((response)=>{
+  axios.get(`${serverUrl}/api/${id}/channel`).then((response)=>{
     setData(response.data.video);
     setUser(response.data.video[0]?.user);
 

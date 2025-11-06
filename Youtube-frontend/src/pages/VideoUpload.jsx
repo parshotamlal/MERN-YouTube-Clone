@@ -3,6 +3,7 @@ import { FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FcApproval  } from "react-icons/fc";
+import { serverUrl } from '../Server';
 
 function VideoUpload() {
   const [inputField, setInputField] = useState({
@@ -12,8 +13,6 @@ function VideoUpload() {
     thumbnail: "",
     videoType: ""
   });
-
-  console.log(inputField);
 
   const handleOnChangeInput = (event, name) => {
     setInputField({
@@ -46,8 +45,6 @@ function VideoUpload() {
         setInputField(prev => ({ ...prev, videoLink: url }));
         setVideoLoader(true)
       }
-
-      console.log(url);
     } catch (err) {
       setLoader(true);
       console.error("Upload failed:", err);
@@ -67,10 +64,10 @@ function VideoUpload() {
       // Redirect if not logged in
       navigate("/");
     }
-  }, [])
+  }, []);
 
   const handleSubmitFunc = async () => {
-    await axios.post(`http://localhost:5000/api/video`,inputField,{withCredentials:true}).then((res)=>{
+    await axios.post(`${serverUrl}/api/video`,inputField,{withCredentials:true}).then((res)=>{
       console.log(res);
       navigate("/");
 
