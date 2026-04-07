@@ -79,7 +79,7 @@ const fetchProfileData =async() => {
 
  <div className="flex flex-col gap-1">
   <div className="text-md font-semibold text-white">{item.title}</div>
-  <div className="text-sm text-gray-400">{item.description}</div>
+  {/* <div className="text-sm text-gray-400">{item.description}</div> */}
   <div className="text-sm text-gray-400">{item?.createdAt.slice(0,10)}</div>
 </div>
 

@@ -11,7 +11,6 @@ const [data,setData] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/allvideo').then(res=> {
-      console.log(res.data.videos);
       setData(res.data.videos);
     }).catch(err=>{
       console.log(err);
@@ -23,23 +22,19 @@ const [data,setData] = useState([]);
   const options = [
     "All",
     "Music",
-    "Disha Vakani",
     "News",
-    "Mixes",
     "React Routers",
     "Podcasts",
     "Web Development",
     "Data Structures",
     "WWE Championship",
     "Restaurants",
-    "Live",
     "Asian Music",
     "Information",
     "Tourism",
-    "Roads",
     "Recently Uploaded",
-    "Watched",
-    "New to You"
+
+    
   ];
 
   return (
@@ -71,7 +66,7 @@ const [data,setData] = useState([]);
         className="text-white no-underline cursor-pointer h-auto box-border flex flex-col"
       >
         {/* Thumbnail */}
-        <div className="w-full relative h-[216px] box-border">
+        <div className=" sm:w-sm w-full relative h-[216px] box-border">
           <img
             className="w-full h-full rounded-[10px]"
             src={item.thumbnail}
