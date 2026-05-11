@@ -7,7 +7,6 @@ httpOnly :true,
 secure:false,
 sameSite:'Lax'
 }
-
 // Create User (Signup)
 export const createUser = async (req, res) => {
   try {
