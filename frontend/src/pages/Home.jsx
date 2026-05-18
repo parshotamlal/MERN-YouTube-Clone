@@ -9,5 +9,4 @@ const Home = ({ sideNavbar }) => {
     </div>
   );
 };
-
 export  {Home};
