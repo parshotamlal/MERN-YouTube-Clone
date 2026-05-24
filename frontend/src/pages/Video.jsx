@@ -9,7 +9,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { serverUrl } from "../Server";
 
-
 function Video() {
 
 
