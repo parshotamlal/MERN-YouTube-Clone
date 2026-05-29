@@ -11,7 +11,6 @@ import { serverUrl } from "../Server";
 
 function Video() {
 
-
   const [comment, setComment] = useState('');
 
   const [comments,setComments] = useState([]);
